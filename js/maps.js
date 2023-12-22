@@ -14,18 +14,18 @@ const emojis = {
     'WIN': '🏆',
   };
   
-  const maps = [];
+const maps = [];
   maps.push(`
-    IXXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
-    OXXXXXXXXX
+    XXXXXXXXXX
+    XXXXXXXXXX
+    XXXXXXXXXX
+    XXXXXXXXXX
+    XXXXXXXXXX
+    O--------I
+    XXXXXXXXXX
+    XXXXXXXXXX
+    XXXXXXXXXX
+    XXXXXXXXXX
   `);
   maps.push(`
     O--XXXXXXX

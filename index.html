@@ -6,20 +6,59 @@
     <title>Bomber Game - Juego virtual</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
-<body>
+<body id='body'>
     <div class="game">
-        <canvas id="game__canvas"></canvas>
-        <div class="controls">
-            <button class="controls__btn" id="btn--up">Arriba</button>
-            <button class="controls__btn" id="btn--left">Izquierda</button>
-            <button class="controls__btn" id="btn--right">Derecha</button>
-            <button class="controls__btn" id="btn--down">Abajo</button>
+        <div class="game__header">
+            <div class="game__header__lives">
+                <img id="header__lives" src="" alt="lives">
+            </div>
+            <div class="game__header__score">
+                <h2>SCORE</h2>
+                <p id="scorer"></p>
+            </div>
+            <div class="game__header__time">
+                <h2>TIME</h2>
+                <p id="timer"></p>
+            </div>
         </div>
-        <div class="messages">
-            <!-- TODO -->
-            <p>Parrafo para mensajes</p>
+        <div class="canvas_container">
+            <div id="infoboard">
+                <h1 id="infoboard__title"></h1>
+                <p id="infoboard__subtitle"></p>
+                <img id="infoboard_lives" src="" alt="">
+                <div id="infoboard__btn">
+                    <h2 id="infoboard__btn_text">CONTINUE</h2>
+                    <img src="./assets/imgs/others/empty_btn.png" alt="lives">
+                </div>
+            </div>
+            <canvas id="game__canvas"></canvas>
+        </div>
+        <div class="controls">
+            <button class="controls__btn" id="btn--up">
+                <img src="./assets/imgs/others/1x/arrow_direction.png" alt="arrow_up">
+            </button>
+            <button class="controls__btn" id="btn--left">
+                <img src="./assets/imgs/others/1x/arrow_direction.png" alt="arrow_left">
+            </button>
+            <button class="controls__btn" id="btn--right">
+                <img src="./assets/imgs/others/1x/arrow_direction.png" alt="arrow_right">
+            </button>
+            <button class="controls__btn" id="btn--down">
+                <img src="./assets/imgs/others/1x/arrow_direction.png" alt="arrow_down">
+            </button>
+            <button class="controls__btn" id="btn--center">
+                <img src="./assets/imgs/others/1x/center_direction.png" alt="center">
+            </button>
+        </div>
+        <div id="backgroundImage">
+            <img id="backgroundImage_img" src="./assets/imgs/backgrounds/SVG/bg_level_2.svg" alt="background">
         </div>
     </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/boards.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/bombs.js"></script>
     <script src="js/maps.js"></script>
     <script src="js/game.js"></script>
 </body>

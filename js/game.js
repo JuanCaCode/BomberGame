@@ -1,3 +1,4 @@
+const body = document.querySelector("#body");
 const canvas = document.querySelector("#game__canvas");
 const ctx2D = canvas.getContext("2d");
 
@@ -8,26 +9,19 @@ const btn = {
   right: document.querySelector("#btn--right"),
 };
 
-const player = {
-  position: {
-    x: undefined,
-    y: undefined,
-  },
-};
-
-const gift = {
-  position: {
-    x: undefined,
-    y: undefined,
-  },
-};
-
 let collisionPositions = [];
 
 let canvasSize;
 let elementSize;
 let level = 0;
 
+let lives = 3;
+let score = 0;
+let time = 0;
+
+const timer = document.querySelector('#timer')
+const scorer = document.querySelector('#scorer')
+scorer.innerHTML = score;
 /**********************************************************
  * WINDOW EVENTS (load, resize)
  */
@@ -43,12 +37,16 @@ btn.left.addEventListener("click", () => movePlayer("left"));
 btn.right.addEventListener("click", () => movePlayer("right"));
 
 function startGame() {
+  resetGame();
   responsiveCanvas();
 
   ctx2D.font = `${elementSize}px verdana`;
   ctx2D.textAlign = "start";
 
   renderMap();
+  playerImage();
+  bombsAnimation();
+  showLives(lives);
 }
 
 function responsiveCanvas() {
@@ -59,44 +57,60 @@ function responsiveCanvas() {
   canvas.width = canvasSize;
   canvas.height = canvasSize;
 
-  elementSize = canvasSize / 10 - 1;
+  elementSize = Math.trunc(canvasSize / 10);
 }
 
 function renderMap() {
+  // get the level map
   const mapa = maps[level];
-  if(!mapa) return gameWin();
-  const mapRows = mapa.trim().split("\n");
-  const mapRowsCols = mapRows.map((row) => row.trim().split(""));
 
-  ctx2D.clearRect(0, 0, canvasSize, canvasSize);
-  collisionPositions = [];
-  gift.position = { x: undefined, y: undefined };
+  // if there is no more levels, you win the game
+  if (!mapa) return gameWin(); 
 
+  // remove spaces and split by rows
+  const mapRows = mapa.trim().split("\n"); 
+
+  // remove spaces and split by cols
+  const mapRowsCols = mapRows.map((row) => row.trim().split("")); 
+
+  // clear canvas
+  ctx2D.clearRect(0, 0, canvasSize, canvasSize); 
+  
+  // clear collision positions
+  collisionPositions = []; 
+
+  // clear gift position
+  gift.position = { x: undefined, y: undefined }; 
+
+  // change background landscapes image
+  landscapes_img.src = landscapes[`level_${level + 1}`].img.src;
+
+  // change canvas background color
+  canvas.style.background = `radial-gradient(${landscapes[`level_${level + 1}`].color_1}, ${landscapes[`level_${level + 1}`].color_2})`; 
+
+  // change body background color
+  body.style.background = `radial-gradient(${landscapes[`level_${level + 1}`].color_1}, ${landscapes[`level_${level + 1}`].color_2})`; 
+  
   mapRowsCols.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
-      ctx2D.fillText(
-        emojis[col],
-        elementSize * colIndex,
-        elementSize * (rowIndex + 1)
+
+      ctx2D.drawImage(
+        backgrounds[`level_1`],
+        colIndex * (elementSize + 2),
+        rowIndex * (elementSize + 2),
+        elementSize + 2,
+        elementSize + 2
       );
+      
+      //render explosinn
 
-      if (col === "O" && player.position.x === undefined) {
-        player.position.x = colIndex * elementSize;
-        player.position.y = (rowIndex + 1) * elementSize;
-      }
 
-      if (col === "X") {
-        collisionPositions.push({
-          x: colIndex * elementSize,
-          y: (rowIndex + 1) * elementSize,
-        });
-      }
-
-      if (col === "I") {
-        console.log("I");
-        gift.position.x = colIndex * elementSize;
-        gift.position.y = (rowIndex + 1) * elementSize;
-      }
+      const redering = {
+        I: () => renderGift(colIndex, rowIndex),
+        X: () => {renderBomb(colIndex, rowIndex)},
+        O: () => renderDoor(colIndex, rowIndex),
+      };
+      redering[col] && redering[col]();
     });
   });
   renderPlayerPosition();
@@ -109,11 +123,12 @@ function moveByKey({ key }) {
     ArrowLeft: "left",
     ArrowRight: "right",
   };
-  if(!keys[key]) return;
+  if (!keys[key]) return;
   movePlayer(keys[key]);
 }
 
 function movePlayer(direction) {
+  if(infoboard.style.display === "flex") return;
   if (validateOverflow(direction)) return;
 
   const movement = {
@@ -128,14 +143,10 @@ function movePlayer(direction) {
   renderMap();
 }
 
-function renderPlayerPosition() {
-  ctx2D.fillText(emojis["PLAYER"], player.position.x, player.position.y);
-}
-
 function validateOverflow(direction) {
   const result = {
-    up: player.position.y <= elementSize,
-    down: player.position.y >= canvasSize - elementSize,
+    up: player.position.y < elementSize,
+    down: player.position.y > canvasSize - elementSize * 2,
     left: player.position.x <= 1,
     right: player.position.x >= canvasSize - elementSize * 2,
   };
@@ -143,15 +154,15 @@ function validateOverflow(direction) {
 }
 
 function validateBombCollision() {
-  const result = collisionPositions.find(
-    (position) => {
-      return Math.trunc(player.position.x) === Math.trunc(position.x) &&  Math.trunc(player.position.y) ===  Math.trunc(position.y)
-    }
-  );
+  const result = collisionPositions.find((position) => {
+    return (
+      Math.trunc(player.position.x) === Math.trunc(position.x) &&
+      Math.trunc(player.position.y) === Math.trunc(position.y)
+    );
+  });
   if (result) {
-    alert("GAME OVER");
-    player.position.x = undefined;
-    player.position.y = undefined;
+    explosionOnCollision(result.x, result.y);
+    setTimeout(levelFail, 500);
   }
 }
 
@@ -160,22 +171,74 @@ function validateGiftCollision() {
     Math.trunc(player.position.x) === Math.trunc(gift.position.x) &&
     Math.trunc(player.position.y) === Math.trunc(gift.position.y)
   ) {
-    alert("WIN");
     player.position.x = undefined;
     player.position.y = undefined;
     levelUp();
+    scoreUp();
   }
 }
 
 function levelUp() {
-  alert("LEVEL UP");
   level++;
-  console.log(level);
   renderMap();
 }
 
-function gameWin (){
-  alert('YOU WON THE GAME');
-  level = 0;
+function scoreUp(){
+  score++;
+  scorer.innerHTML = score;
+}
+
+function levelFail() {
+  if(infoboard.style.display === "flex") return;
+  
+  player.position.x = undefined;
+  player.position.y = undefined;
+  lives--;
+  showLives(lives);
+
+  let title = ()=> lives === 0 ? 'GAME OVER' : `${lives} ${lives == 1?'LIFE':'LIVES'} LEFT`;
+  let subtitle = ()=> lives === 0 ? 'Sorry, you lost the game' : `${lives == 1? "Take so much care, it's your only opportunity":`Take care, you have ${lives} opportunities`}`;
+  infoBoardTitle(title())
+  infoBoardSubtitle(subtitle())
+
+  infoboardToggle(true);
   renderMap();
+}
+
+function gameWin() {
+  let title = 'YOU WON THE GAME';
+  let subtitle = 'Congratulations, you are a winner';
+  infoBoardTitle(title)
+  infoBoardSubtitle(subtitle)
+  infoboardToggle(true)
+
+  level = 0;
+  resetGame()
+  renderMap()
+}
+
+function resetGame(){
+  ctx2D.clearRect(0, 0, canvasSize, canvasSize);
+
+  level = 0;
+  lives = 3;
+  score = 0;
+  time = 0;
+  runTimer()  
+
+  player.position.x = undefined;
+  player.position.y = undefined;
+}
+
+function runTimer(){
+  setInterval(()=>{
+    time++;
+    // show time like 00:00
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    timer.innerHTML = `${minutes}:${seconds}`;
+  }, 1000)
 }
