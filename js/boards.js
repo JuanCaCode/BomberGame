@@ -22,10 +22,10 @@ function infoboardToggle(show){
     }
 }
 
-const lives_0 = createImage('./../assets/imgs/others/lives_0.png');
-const lives_1 = createImage('./../assets/imgs/others/lives_1.png');
-const lives_2 = createImage('./../assets/imgs/others/lives_2.png');
-const lives_3 = createImage('./../assets/imgs/others/lives_3.png');
+const lives_0 = createImage('./assets/imgs/others/lives_0.png');
+const lives_1 = createImage('./assets/imgs/others/lives_1.png');
+const lives_2 = createImage('./assets/imgs/others/lives_2.png');
+const lives_3 = createImage('./assets/imgs/others/lives_3.png');
 function showLives(lives){
     const livesSprites = {
         0: lives_0,
