@@ -1,23 +1,23 @@
 // BACKGROUNDS
 const backgrounds = {
-  level_1: createImage("../assets/imgs/backgrounds/walls/pared_1.png"),
+  level_1: createImage("./../assets/imgs/backgrounds/walls/pared_1.png"),
 };
 
 // LANDSCAPES
 let landscapes_img = document.querySelector("#backgroundImage_img");
 const landscapes = {
   level_1: {
-    img: createImage("../assets/imgs/backgrounds/SVG/bg_level_1.svg"),
+    img: createImage("./../assets/imgs/backgrounds/SVG/bg_level_1.svg"),
     color_1: "#fff",
     color_2: "#3ba90e",
   },
   level_2: {
-    img: createImage("../assets/imgs/backgrounds/SVG/bg_level_2.svg"),
+    img: createImage("./../assets/imgs/backgrounds/SVG/bg_level_2.svg"),
     color_1: "#ca2424",
     color_2: "#530505",
   },
   level_3: {
-    img: createImage("../assets/imgs/backgrounds/SVG/bg_level_3.svg"),
+    img: createImage("./../assets/imgs/backgrounds/SVG/bg_level_3.svg"),
     color_1: "#d591f9",
     color_2: "#5f0ba0",
   },

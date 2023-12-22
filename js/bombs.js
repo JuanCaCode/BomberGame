@@ -1,17 +1,17 @@
-const bomb_1_3 = createImage("../assets/imgs/utils/bomb_1_3.png");
-const bomb_2 = createImage("../assets/imgs/utils/bomb_2.png");
-const bomb_4 = createImage("../assets/imgs/utils/bomb_4.png");
+const bomb_1_3 = createImage("./../assets/imgs/utils/bomb_1_3.png");
+const bomb_2 = createImage("./../assets/imgs/utils/bomb_2.png");
+const bomb_4 = createImage("./../assets/imgs/utils/bomb_4.png");
 
 let bomb_img = bomb_1_3;
 
 const explosion = {
-    img_1: createImage("../assets/imgs/explosion/explosion_1.png"),
-    img_2: createImage("../assets/imgs/explosion/explosion_2.png"),
-    img_3: createImage("../assets/imgs/explosion/explosion_3.png"),
-    img_4: createImage("../assets/imgs/explosion/explosion_4.png"),
-    img_5: createImage("../assets/imgs/explosion/explosion_5.png"),
-    img_6: createImage("../assets/imgs/explosion/explosion_6.png"),
-    img_7: createImage("../assets/imgs/explosion/explosion_7.png")
+    img_1: createImage("./../assets/imgs/explosion/explosion_1.png"),
+    img_2: createImage("./../assets/imgs/explosion/explosion_2.png"),
+    img_3: createImage("./../assets/imgs/explosion/explosion_3.png"),
+    img_4: createImage("./../assets/imgs/explosion/explosion_4.png"),
+    img_5: createImage("./../assets/imgs/explosion/explosion_5.png"),
+    img_6: createImage("./../assets/imgs/explosion/explosion_6.png"),
+    img_7: createImage("./../assets/imgs/explosion/explosion_7.png")
 }
 
 /*****************************************************

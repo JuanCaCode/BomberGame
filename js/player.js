@@ -5,13 +5,13 @@ const player = {
   },
 };
 
-const img1 = createImage("../assets/imgs/player/player_1.png");
-const img2 = createImage("../assets/imgs/player/player_2.png");
-const img3 = createImage("../assets/imgs/player/player_3.png");
+const img1 = createImage("./../assets/imgs/player/player_1.png");
+const img2 = createImage("./../assets/imgs/player/player_2.png");
+const img3 = createImage("./../assets/imgs/player/player_3.png");
 
 let player_img = img1;
 
-const gift_img = createImage("../assets/imgs/utils/gift_map.png");
+const gift_img = createImage("./../assets/imgs/utils/gift_map.png");
 
 function playerImage() {
   let counter = 0;
