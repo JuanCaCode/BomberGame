@@ -24,9 +24,9 @@ const landscapes = {
 };
 
 const doors = {
-  level_1: createImage("../assets/imgs/doors/door_lv1.png"),
-  level_2: createImage("../assets/imgs/doors/door_lv2.png"),
-  level_3: createImage("../assets/imgs/doors/door_lv3.png"),
+  level_1: createImage("./assets/imgs/doors/door_lv1.png"),
+  level_2: createImage("./assets/imgs/doors/door_lv2.png"),
+  level_3: createImage("./assets/imgs/doors/door_lv3.png"),
 };
 
 function createImage(src) {
